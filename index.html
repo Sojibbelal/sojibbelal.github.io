@@ -4,422 +4,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sojib Belal — Marketing Automation & Customer Success</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0c0c0e;
-      --surface: #131316;
-      --surface2: #1a1a1f;
-      --border: #2a2a32;
-      --accent: #c8a96e;
-      --accent2: #7eb8a4;
-      --text: #e8e6e0;
-      --muted: #7a7870;
-      --dim: #3a3835;
+      --bg: #0c0c0e; --surface: #131316; --surface2: #1a1a1f;
+      --border: #2a2a32; --accent: #c8a96e; --accent2: #7eb8a4;
+      --text: #e8e6e0; --muted: #7a7870; --dim: #3a3835;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Lato', sans-serif;
-      font-weight: 300;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    /* Grain overlay */
+    body { background: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.6;
+      pointer-events: none; z-index: 9999; opacity: 0.6;
     }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.25rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    nav.scrolled {
-      background: rgba(12,12,14,0.92);
-      backdrop-filter: blur(12px);
-      border-color: var(--border);
-    }
-    .nav-logo {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid transparent; transition: border-color 0.3s, background 0.3s; }
+    nav.scrolled { background: rgba(12,12,14,0.92); backdrop-filter: blur(12px); border-color: var(--border); }
+    .nav-logo { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+    .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 3rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(200,169,110,0.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.1s;
-    }
-    .hero-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.25s;
-    }
-    .hero-name em {
-      font-style: italic;
-      color: var(--accent);
-    }
-    .hero-tagline {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.4s;
-    }
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.55s;
-    }
-    .btn {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 0.85rem 1.8rem;
-      border-radius: 2px;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: var(--bg);
-    }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,169,110,0.07) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.1s; }
+    .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(3.5rem, 8vw, 7rem); line-height: 1.0; letter-spacing: -0.02em; color: var(--text); margin-bottom: 1rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.25s; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-tagline { font-size: 1.1rem; color: var(--muted); max-width: 560px; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease forwards 0.55s; }
+    .btn { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 0.85rem 1.8rem; border-radius: 2px; transition: all 0.2s; display: inline-block; cursor: pointer; border: none; }
+    .btn-primary { background: var(--accent); color: var(--bg); }
     .btn-primary:hover { background: #d9bb84; }
-    .btn-ghost {
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
+    .btn-ghost { border: 1px solid var(--border); color: var(--muted); background: transparent; }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 3rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      color: var(--dim);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.8s;
-    }
-    .hero-scroll::before {
-      content: '';
-      width: 40px;
-      height: 1px;
-      background: var(--dim);
-    }
-
-    /* SECTIONS */
+    .hero-scroll { position: absolute; bottom: 2.5rem; left: 3rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; display: flex; align-items: center; gap: 0.75rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.8s; }
+    .hero-scroll::before { content: ''; width: 40px; height: 1px; background: var(--dim); }
     section { padding: 6rem 3rem; }
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.25em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
-      margin-bottom: 3rem;
-      color: var(--text);
-    }
-
-    /* ABOUT */
-    .about { max-width: 1100px; margin: 0 auto; }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-    .about-text p {
-      color: var(--muted);
-      margin-bottom: 1.25rem;
-      font-size: 1rem;
-    }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.25em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.1; margin-bottom: 3rem; color: var(--text); }
+    .inner { max-width: 1100px; margin: 0 auto; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 1.25rem; font-size: 1rem; }
     .about-text p strong { color: var(--text); font-weight: 400; }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-    .skill-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-      border-radius: 2px;
-      transition: border-color 0.2s, color 0.2s;
-    }
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .skill-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: 2px; transition: border-color 0.2s, color 0.2s; }
     .skill-tag:hover { border-color: var(--accent2); color: var(--accent2); }
-
-    /* CASE STUDIES */
     .case-studies { background: var(--surface); }
-    .case-studies-inner { max-width: 1100px; margin: 0 auto; }
     .cs-grid { display: grid; gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
-    .cs-card {
-      background: var(--surface);
-      padding: 3rem;
-      cursor: default;
-      transition: background 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .cs-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--accent);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.3s ease;
-    }
+    .cs-card { background: var(--surface); padding: 3rem; transition: background 0.2s; position: relative; overflow: hidden; }
+    .cs-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); transform: scaleY(0); transform-origin: top; transition: transform 0.3s ease; }
     .cs-card:hover { background: var(--surface2); }
     .cs-card:hover::before { transform: scaleY(1); }
-    .cs-number {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--dim);
-      letter-spacing: 0.2em;
-      margin-bottom: 1.5rem;
-    }
-    .cs-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.6rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .cs-meta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-    .cs-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      color: var(--accent2);
-      border: 1px solid rgba(126,184,164,0.3);
-      padding: 0.3rem 0.6rem;
-      border-radius: 2px;
-      text-transform: uppercase;
-    }
+    .cs-number { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--dim); letter-spacing: 0.2em; margin-bottom: 1.5rem; }
+    .cs-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 1rem; line-height: 1.2; }
+    .cs-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .cs-tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--accent2); border: 1px solid rgba(126,184,164,0.3); padding: 0.3rem 0.6rem; border-radius: 2px; text-transform: uppercase; }
     .cs-body { color: var(--muted); font-size: 0.95rem; }
-    .cs-body h4 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin: 1.5rem 0 0.5rem;
-    }
+    .cs-body h4 { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 0.5rem; }
     .cs-body h4:first-child { margin-top: 0; }
     .cs-body p { margin-bottom: 0.75rem; }
     .cs-body ul { padding-left: 1.25rem; }
     .cs-body ul li { margin-bottom: 0.4rem; }
-    .cs-result {
-      margin-top: 1.75rem;
-      padding: 1.25rem 1.5rem;
-      background: rgba(200,169,110,0.06);
-      border-left: 2px solid var(--accent);
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    /* EXPERIENCE */
-    .experience { max-width: 1100px; margin: 0 auto; }
+    .cs-result { margin-top: 1.75rem; padding: 1.25rem 1.5rem; background: rgba(200,169,110,0.06); border-left: 2px solid var(--accent); font-size: 0.9rem; color: var(--text); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .project-card { background: var(--bg); padding: 2rem; transition: background 0.2s; }
+    .project-card:hover { background: var(--surface2); }
+    .project-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .project-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 0.5rem; }
+    .project-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+    .project-link { display: inline-block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .project-link:hover { text-decoration: underline; }
     .timeline { position: relative; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0; bottom: 0;
-      width: 1px;
-      background: var(--border);
-    }
-    .tl-item {
-      padding-left: 2.5rem;
-      padding-bottom: 3rem;
-      position: relative;
-    }
-    .tl-item::before {
-      content: '';
-      position: absolute;
-      left: -4px;
-      top: 6px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 2px solid var(--bg);
-    }
-    .tl-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-    .tl-role {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-    }
-    .tl-company {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.75rem;
-    }
-    .tl-desc { color: var(--muted); font-size: 0.92rem; max-width: 560px; }
-
-    /* CONTACT */
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .tl-item { padding-left: 2.5rem; padding-bottom: 3rem; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+    .tl-date { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+    .tl-role { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--text); margin-bottom: 0.2rem; }
+    .tl-company { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .tl-context { font-size: 0.8rem; color: var(--dim); font-style: italic; margin-bottom: 0.75rem; font-family: 'DM Mono', monospace; }
+    .tl-desc { color: var(--muted); font-size: 0.92rem; max-width: 640px; }
+    .tl-desc ul { padding-left: 1.1rem; margin-top: 0.5rem; }
+    .tl-desc ul li { margin-bottom: 0.3rem; }
     .contact { background: var(--surface); }
-    .contact-inner {
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
-    }
+    .contact-inner { max-width: 700px; margin: 0 auto; text-align: center; }
     .contact-inner .section-title { margin-bottom: 1rem; }
-    .contact-sub {
-      color: var(--muted);
-      margin-bottom: 2.5rem;
-      font-size: 1rem;
-    }
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    footer p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--dim);
-      letter-spacing: 0.1em;
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* RESPONSIVE */
+    .contact-sub { color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--dim); letter-spacing: 0.1em; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .hero { padding: 7rem 1.5rem 4rem; }
-      section { padding: 4rem 1.5rem; }
+      nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; }
+      .hero { padding: 7rem 1.5rem 4rem; } section { padding: 4rem 1.5rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .cs-card { padding: 2rem 1.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
       footer { padding: 1.5rem; flex-direction: column; text-align: center; }
       .hero-scroll { left: 1.5rem; }
     }
@@ -427,22 +110,21 @@
 </head>
 <body>
 
-  <!-- NAV -->
   <nav id="nav">
     <a href="#" class="nav-logo">SB</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
-      <li><a href="#work">Work</a></li>
+      <li><a href="#work">Case Studies</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" id="home">
-    <p class="hero-eyebrow">Based in Singapore · Open to Remote</p>
+    <p class="hero-eyebrow">Singapore · Open to Remote Worldwide</p>
     <h1 class="hero-name">Sojib<br><em>Belal</em></h1>
-    <p class="hero-tagline">Marketing automation specialist & customer success leader with 6+ years in B2B SaaS. I connect the technical and the human side of revenue.</p>
+    <p class="hero-tagline">Marketing automation specialist & customer success leader with 6+ years in B2B SaaS. I connect the technical and the human side of revenue — across CRM, email automation, onboarding, and RevOps.</p>
     <div class="hero-cta">
       <a href="#work" class="btn btn-primary">View Case Studies</a>
       <a href="#contact" class="btn btn-ghost">Get in Touch</a>
@@ -450,19 +132,18 @@
     <span class="hero-scroll">Scroll to explore</span>
   </section>
 
-  <!-- ABOUT -->
   <section id="about">
-    <div class="about">
+    <div class="inner">
       <p class="section-label reveal">About</p>
       <h2 class="section-title reveal">The technical marketer<br><em style="font-style:italic; color:var(--accent)">who speaks both languages</em></h2>
       <div class="about-grid">
         <div class="about-text reveal">
           <p>I sit at the intersection of <strong>marketing automation, customer success, and operations</strong> — the place where most teams struggle to find someone who can do all three.</p>
-          <p>Over 6+ years in B2B SaaS, I've onboarded clients, built segmentation logic from scratch, automated email journeys, managed migrations, and stepped into Chief of Staff responsibilities at a growing agency.</p>
-          <p>I'm not just a button-clicker in a platform. I understand <strong>why</strong> the automation exists, who it serves, and how to measure whether it's working.</p>
-          <p>Currently open to fully remote, work-from-anywhere roles in <strong>Customer Success, Implementation, or RevOps</strong>.</p>
+          <p>Over 6+ years across B2B SaaS companies in the US, Singapore, and beyond, I've onboarded clients, built segmentation logic, automated email journeys, managed platform migrations, and stepped into Chief of Staff and Client Champion responsibilities.</p>
+          <p>I've worked with <strong>13+ marketing automation platforms</strong> across my career. I understand why the automation exists, who it serves, and how to measure whether it's working.</p>
+          <p>Currently open to fully remote roles in <strong>Customer Success, Implementation, Project Management, or RevOps</strong>.</p>
           <br/>
-          <a href="mailto:your@email.com" class="btn btn-ghost" style="display:inline-block">Download Resume</a>
+          <a href="resume.pdf" class="btn btn-ghost">Download Resume</a>
         </div>
         <div class="reveal">
           <p class="section-label" style="margin-bottom:1rem;">Platform expertise</p>
@@ -471,9 +152,9 @@
             <span class="skill-tag">HubSpot</span>
             <span class="skill-tag">Iterable</span>
             <span class="skill-tag">Salesforce MC</span>
+            <span class="skill-tag">ActiveCampaign</span>
             <span class="skill-tag">Zapier</span>
             <span class="skill-tag">Mailchimp</span>
-            <span class="skill-tag">ActiveCampaign</span>
             <span class="skill-tag">Omnisend</span>
             <span class="skill-tag">GetResponse</span>
             <span class="skill-tag">DotDigital</span>
@@ -481,96 +162,141 @@
             <span class="skill-tag">AWeber</span>
             <span class="skill-tag">n8n</span>
             <span class="skill-tag">Campaign Monitor</span>
+            <span class="skill-tag">HubSpot CRM</span>
+            <span class="skill-tag">Digioh</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CASE STUDIES -->
   <section id="work" class="case-studies">
-    <div class="case-studies-inner">
+    <div class="inner">
       <p class="section-label reveal">Case Studies</p>
       <h2 class="section-title reveal">Selected work</h2>
-
       <div class="cs-grid">
 
-        <!-- CS 1 -->
         <div class="cs-card reveal">
-          <p class="cs-number">01 / 03</p>
+          <p class="cs-number">01 / 07</p>
           <h3 class="cs-title">Email Segmentation & Automation at Scale</h3>
-          <div class="cs-meta">
-            <span class="cs-tag">Segmentation</span>
-            <span class="cs-tag">Automation</span>
-            <span class="cs-tag">Digioh</span>
-          </div>
+          <div class="cs-meta"><span class="cs-tag">Segmentation</span><span class="cs-tag">Automation</span><span class="cs-tag">Migration</span><span class="cs-tag">Digioh</span></div>
           <div class="cs-body">
-            <h4>Situation</h4>
-            <p>Digioh's customers were sending emails to their entire contact list with no segmentation. Everyone received the same message — regardless of their behavior, source, or stage in the customer journey.</p>
-            <h4>Problem</h4>
-            <p>Unsegmented sending meant low engagement, high unsubscribe rates, and missed revenue. The right message wasn't reaching the right person at the right time, which eroded trust in email as a channel.</p>
+            <h4>Situation</h4><p>Digioh's customers were sending emails to their entire contact list with no segmentation — everyone received the same message regardless of behavior, source, or lifecycle stage.</p>
+            <h4>Problem</h4><p>Unsegmented sending meant low engagement, high unsubscribes, and missed revenue. The right message wasn't reaching the right person at the right time.</p>
             <h4>What I Did</h4>
             <ul>
-              <li>Audited existing contact lists and identified segmentation criteria — behavior, lead source, engagement level, and lifecycle stage</li>
-              <li>Split contacts into targeted lists based on those criteria</li>
-              <li>Built automation workflows that triggered personalised emails to each segment at the right time</li>
-              <li>Managed automated platform migrations for users moving their email data — reducing manual effort and minimising errors during transition</li>
+              <li>Audited existing contact lists and identified segmentation criteria — behavior, lead source, engagement level, lifecycle stage</li>
+              <li>Split contacts into targeted lists and built automation workflows for each segment</li>
+              <li>Handled automated platform migrations, reducing manual effort and errors</li>
             </ul>
-            <div class="cs-result">
-              <strong>Outcome:</strong> Customers moved from batch-and-blast sending to targeted, automated email flows. Engagement improved as the right audiences received relevant content. Migration automation dramatically reduced turnaround time and human error.
-            </div>
+            <div class="cs-result"><strong>Outcome:</strong> Customers moved from batch-and-blast to targeted, automated flows. Engagement improved and migration turnaround time dropped significantly.</div>
           </div>
         </div>
 
-        <!-- CS 2 -->
         <div class="cs-card reveal">
-          <p class="cs-number">02 / 03</p>
+          <p class="cs-number">02 / 07</p>
           <h3 class="cs-title">Form-Driven Personalisation Engine</h3>
-          <div class="cs-meta">
-            <span class="cs-tag">Form Logic</span>
-            <span class="cs-tag">List Segmentation</span>
-            <span class="cs-tag">Email Sequences</span>
-          </div>
+          <div class="cs-meta"><span class="cs-tag">Form Logic</span><span class="cs-tag">Segmentation</span><span class="cs-tag">Email Sequences</span></div>
           <div class="cs-body">
-            <h4>Situation</h4>
-            <p>Clients had forms collecting rich user data — preferences, intent signals, self-identified needs — but that data wasn't driving any follow-up logic. Every user got the same email regardless of what they submitted.</p>
-            <h4>Problem</h4>
-            <p>Unused form data meant missed personalisation opportunity. The gap between what users told the brand and what the brand sent back was causing irrelevance and drop-off.</p>
+            <h4>Situation</h4><p>Clients had forms collecting rich user intent data — but none of it was driving follow-up logic. Every user got the same email regardless of what they submitted.</p>
+            <h4>Problem</h4><p>Unused form data meant missed personalisation. The gap between what users told the brand and what they received was causing irrelevance and drop-off.</p>
             <h4>What I Did</h4>
             <ul>
-              <li>Connected form inputs to segmentation logic — users were automatically placed into different lists based on their specific responses</li>
-              <li>Built triggered email sequences that fired immediately based on each input path</li>
-              <li>Designed multi-step journeys tailored to each segment, so every user received a relevant, contextual experience from submission onward</li>
+              <li>Connected form inputs to segmentation logic — users placed into different lists based on their specific responses</li>
+              <li>Built triggered email sequences firing immediately for each input path</li>
+              <li>Designed multi-step journeys tailored per segment for a relevant, contextual experience from submission onward</li>
             </ul>
-            <div class="cs-result">
-              <strong>Outcome:</strong> Every form submission triggered a personalised email sequence. Forms became a live segmentation and personalisation engine — not just a data collection tool.
-            </div>
+            <div class="cs-result"><strong>Outcome:</strong> Forms became a live segmentation and personalisation engine. Every submission triggered a relevant, personalised email sequence automatically.</div>
           </div>
         </div>
 
-        <!-- CS 3 -->
         <div class="cs-card reveal">
-          <p class="cs-number">03 / 03</p>
-          <h3 class="cs-title">Help Documentation System & Knowledge Base Setup</h3>
-          <div class="cs-meta">
-            <span class="cs-tag">Documentation</span>
-            <span class="cs-tag">Customer Success</span>
-            <span class="cs-tag">Onboarding</span>
-          </div>
+          <p class="cs-number">03 / 07</p>
+          <h3 class="cs-title">HubSpot CRM Integration & Contact Sync</h3>
+          <div class="cs-meta"><span class="cs-tag">HubSpot</span><span class="cs-tag">CRM Integration</span><span class="cs-tag">RevOps</span></div>
           <div class="cs-body">
-            <h4>Situation</h4>
-            <p>Support teams and customers were relying heavily on direct communication for questions that had repeatable, documentable answers. There was no centralised knowledge base.</p>
-            <h4>Problem</h4>
-            <p>Without structured documentation, the same questions consumed support hours repeatedly. Customers couldn't self-serve, which slowed their time-to-value and increased ticket volume.</p>
+            <h4>Situation</h4><p>A client ran HubSpot alongside a separate CRM, with contacts living in two disconnected systems. Sales and marketing were working from different, often conflicting data.</p>
+            <h4>Problem</h4><p>Duplicate records, stale contact data, and missed handoffs between teams. There was no single source of truth for the customer record.</p>
             <h4>What I Did</h4>
             <ul>
-              <li>Identified the most common and high-impact support topics through ticket analysis</li>
-              <li>Wrote clear, structured help articles covering platform features, workflows, and troubleshooting steps</li>
-              <li>Organised the knowledge base into logical categories that matched how users actually searched for help</li>
+              <li>Mapped the data schema between HubSpot and the existing CRM to identify field alignment and conflicts</li>
+              <li>Built a two-way sync keeping contacts, lifecycle stages, and properties current in both systems</li>
+              <li>Set up automated segmentation so newly synced contacts dropped into the right lists immediately</li>
+              <li>Created workflows triggering onboarding or nurture sequences based on CRM contact status</li>
             </ul>
-            <div class="cs-result">
-              <strong>Outcome:</strong> Customers could self-serve for common questions, reducing support ticket volume and freeing the team to focus on complex issues. Onboarding became faster with structured reference material available from day one.
-            </div>
+            <div class="cs-result"><strong>Outcome:</strong> Sales and marketing operated from a single live contact database. Leads no longer fell through the gap and automated follow-ups fired without manual intervention.</div>
+          </div>
+        </div>
+
+        <div class="cs-card reveal">
+          <p class="cs-number">04 / 07</p>
+          <h3 class="cs-title">Full-Stack Zapier Automation for Digital Marketing</h3>
+          <div class="cs-meta"><span class="cs-tag">Zapier</span><span class="cs-tag">Workflow Automation</span><span class="cs-tag">Integration</span></div>
+          <div class="cs-body">
+            <h4>Situation</h4><p>A digital marketing team was spending hours weekly on repetitive tasks — copying leads between tools, sending manual follow-ups, updating spreadsheets, and triggering campaigns by hand.</p>
+            <h4>Problem</h4><p>Manual processes created delays, introduced human error, and pulled the team away from strategic work. The tools in the stack weren't talking to each other.</p>
+            <h4>What I Did</h4>
+            <ul>
+              <li>Audited the full marketing stack to identify every manual handoff point</li>
+              <li>Built Zaps connecting lead capture forms to CRM, email platforms, Slack notifications, and Google Sheets</li>
+              <li>Automated lead routing — new submissions triggered instant CRM entry, list assignment, and welcome email</li>
+              <li>Set up multi-step Zaps for campaign triggers, contact tagging, task creation, and internal alerts</li>
+            </ul>
+            <div class="cs-result"><strong>Outcome:</strong> The team eliminated hours of weekly manual work. Leads were captured, routed, and followed up automatically with zero manual steps required after setup.</div>
+          </div>
+        </div>
+
+        <div class="cs-card reveal">
+          <p class="cs-number">05 / 07</p>
+          <h3 class="cs-title">Mailchimp Form Deployment & Campaign Automation</h3>
+          <div class="cs-meta"><span class="cs-tag">Mailchimp</span><span class="cs-tag">Forms</span><span class="cs-tag">List Management</span><span class="cs-tag">Campaigns</span></div>
+          <div class="cs-body">
+            <h4>Situation</h4><p>A client needed to capture leads directly from their website and move them into targeted campaigns — without any manual steps between capture and follow-up.</p>
+            <h4>Problem</h4><p>No structured capture mechanism existed on the site. New contacts weren't being added to the right lists, limiting marketing reach and campaign relevance.</p>
+            <h4>What I Did</h4>
+            <ul>
+              <li>Designed and deployed Mailchimp embedded forms and pop-ups on the client's website</li>
+              <li>Configured form fields to collect segmentation data at the point of sign-up</li>
+              <li>Set up conditional list assignment — subscribers placed into specific audience segments based on their inputs</li>
+              <li>Built automated campaign sequences triggering immediately for each segment</li>
+            </ul>
+            <div class="cs-result"><strong>Outcome:</strong> The website became an active lead capture engine. Every new subscriber entered the right campaign automatically — no manual sorting, no delays.</div>
+          </div>
+        </div>
+
+        <div class="cs-card reveal">
+          <p class="cs-number">06 / 07</p>
+          <h3 class="cs-title">Guided Selling Quiz Launch with Klaviyo Integration</h3>
+          <div class="cs-meta"><span class="cs-tag">Klaviyo</span><span class="cs-tag">Digioh</span><span class="cs-tag">Project Management</span><span class="cs-tag">eCommerce</span></div>
+          <div class="cs-body">
+            <h4>Situation</h4><p>eCommerce brands on Digioh needed guided selling quizzes that didn't just recommend products — they needed to capture data, personalise follow-up, and drive post-quiz revenue.</p>
+            <h4>Problem</h4><p>Quiz data was collected but not acted on. There was no connection between quiz responses and email follow-up, so the personalisation opportunity was lost after completion.</p>
+            <h4>What I Did</h4>
+            <ul>
+              <li>Led end-to-end launch of 25+ guided selling quizzes from requirements to go-live</li>
+              <li>Coordinated design, development, and implementation teams across each project</li>
+              <li>Integrated quizzes with Klaviyo — responses mapped to contact properties for segmentation and flow triggers</li>
+              <li>Defined goals, deliverables, and KPIs with stakeholders — achieved 100% on-time delivery</li>
+            </ul>
+            <div class="cs-result"><strong>Outcome:</strong> 25+ quizzes delivered on time. Each quiz fed personalised data into Klaviyo, triggering tailored follow-up sequences and improving post-quiz conversion.</div>
+          </div>
+        </div>
+
+        <div class="cs-card reveal">
+          <p class="cs-number">07 / 07</p>
+          <h3 class="cs-title">Knowledge Base & Help Documentation System</h3>
+          <div class="cs-meta"><span class="cs-tag">Documentation</span><span class="cs-tag">Customer Success</span><span class="cs-tag">Self-Service</span><span class="cs-tag">Onboarding</span></div>
+          <div class="cs-body">
+            <h4>Situation</h4><p>Support teams were fielding the same questions repeatedly. There was no centralised knowledge base and every answer required a direct support interaction.</p>
+            <h4>Problem</h4><p>Without structured documentation, customers couldn't self-serve — slowing time-to-value and inflating ticket volume unnecessarily.</p>
+            <h4>What I Did</h4>
+            <ul>
+              <li>Identified the most common and high-impact support topics through ticket pattern analysis</li>
+              <li>Wrote clear, structured help articles covering platform features, workflows, and troubleshooting</li>
+              <li>Organised content into logical categories matching how users actually searched</li>
+              <li>Created training guides for new support team members</li>
+            </ul>
+            <div class="cs-result"><strong>Outcome:</strong> Ticket volume for documented topics dropped. Customers self-served on common questions, and new team members onboarded faster with day-one reference material.</div>
           </div>
         </div>
 
@@ -578,62 +304,144 @@
     </div>
   </section>
 
-  <!-- EXPERIENCE -->
+  <section id="projects">
+    <div class="inner">
+      <p class="section-label reveal">Projects</p>
+      <h2 class="section-title reveal">Other work</h2>
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="project-icon">🎈</div>
+          <p class="project-title">Balloons Over Texas</p>
+          <p class="project-desc">Client project involving web presence and digital setup for a balloon experience business in Texas.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">📊</div>
+          <p class="project-title">Covid-19 Dashboard</p>
+          <p class="project-desc">Built a data dashboard tracking Covid-19 statistics, demonstrating data visualisation and reporting skills.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">🏛️</div>
+          <p class="project-title">ePorcha System</p>
+          <p class="project-desc">Coordinated the ePorcha portal for the Bangladesh Ministry of Land — a government digital land record system serving citizens nationwide.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">🎓</div>
+          <p class="project-title">Education Management System</p>
+          <p class="project-desc">Managed and supported an education platform deployed across 90+ institutes, handling technical support and system coordination.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">🏢</div>
+          <p class="project-title">Eksheba Uddokta — e-Gov Solution</p>
+          <p class="project-desc">Enhancement and maintenance of an e-government solution for local government operations in Bangladesh.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">🖥️</div>
+          <p class="project-title">Multimedia Classroom Management</p>
+          <p class="project-desc">Deployed and maintained a multimedia classroom management system across educational institutions.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">📱</div>
+          <p class="project-title">Banglalink Digital Platform</p>
+          <p class="project-desc">Contributed to the development of Banglalink's website, self-care portal, online store, and live chat system.</p>
+        </div>
+        <div class="project-card reveal">
+          <div class="project-icon">💼</div>
+          <p class="project-title">Freelance — Upwork & Fiverr</p>
+          <p class="project-desc">Ongoing freelance work in CRM setup, email automation, and marketing platform configuration for global clients.</p>
+          <a href="https://www.upwork.com" target="_blank" class="project-link">View Profile →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="experience">
-    <div class="experience">
+    <div class="inner">
       <p class="section-label reveal">Experience</p>
       <h2 class="section-title reveal">Career timeline</h2>
       <div class="timeline">
+
         <div class="tl-item reveal">
-          <p class="tl-date">2022 — Present</p>
-          <p class="tl-role">Chief of Staff</p>
-          <p class="tl-company">Innovate Marketing Studio</p>
-          <p class="tl-desc">Promoted from Account Strategist. Oversaw cross-functional operations, client strategy, and CMS/email automation delivery. Managed freelance projects via Upwork and Fiverr.</p>
+          <p class="tl-date">2025 — 2026</p>
+          <p class="tl-role">Client Champion (Project Manager)</p>
+          <p class="tl-company">NaXum Online Marketing Services LLC · United States</p>
+          <p class="tl-context">SaaS platform for MLM marketing services</p>
+          <div class="tl-desc"><ul>
+            <li>Led cross-functional teams to deliver projects on time, within scope and budget</li>
+            <li>Defined project goals, timelines, and deliverables aligned with business objectives</li>
+            <li>Acted as main point of contact for clients and internal stakeholders</li>
+            <li>Managed risks, change requests, and resource allocation across active projects</li>
+            <li>Maintained accurate project documentation and drove continuous improvement</li>
+          </ul></div>
         </div>
+
         <div class="tl-item reveal">
-          <p class="tl-date">2020 — 2022</p>
-          <p class="tl-role">Technical Support → Project Management</p>
-          <p class="tl-company">Digioh</p>
-          <p class="tl-desc">Started in technical support, transitioned into project management. Led email segmentation, automation builds, and platform migrations for a wide range of B2B customers.</p>
+          <p class="tl-date">2024 — 2025</p>
+          <p class="tl-role">Chief of Staff / Account Strategist</p>
+          <p class="tl-company">Innovate Marketing Studio · Singapore</p>
+          <p class="tl-context">Online marketing solutions for startup businesses</p>
+          <div class="tl-desc"><ul>
+            <li>Oversaw overall sales and account executive workflows</li>
+            <li>Delivered multi-channel support across chat, email, text, and phone</li>
+            <li>Onboarded new clients and provided platform training</li>
+            <li>Maintained accurate customer records in HubSpot CRM</li>
+            <li>Identified upselling opportunities and improved client retention</li>
+          </ul></div>
         </div>
+
         <div class="tl-item reveal">
-          <p class="tl-date">2018 — 2020</p>
-          <p class="tl-role">Customer Support Executive</p>
-          <p class="tl-company">SoftBD LTD</p>
-          <p class="tl-desc">Provided technical and product support in a B2B SaaS environment. Developed strong foundations in customer communication, issue resolution, and CRM usage.</p>
+          <p class="tl-date">2021 — 2024</p>
+          <p class="tl-role">Customer Support Specialist</p>
+          <p class="tl-company">Digioh · United States</p>
+          <p class="tl-context">SaaS platform for popups and product recommendation quizzes for eCommerce</p>
+          <div class="tl-desc"><ul>
+            <li>Provided technical support for email automation and marketing tools</li>
+            <li>Improved customer engagement, contributing to 20% higher retention rates</li>
+            <li>Led end-to-end launch of 25+ guided selling quizzes — from requirements to execution</li>
+            <li>Integrated quizzes with Klaviyo for data capture and automated follow-up campaigns</li>
+            <li>Conducted training for new support team members and created troubleshooting guides</li>
+            <li>Achieved 100% on-time delivery across all managed quiz projects</li>
+          </ul></div>
         </div>
+
+        <div class="tl-item reveal">
+          <p class="tl-date">2019 — 2021</p>
+          <p class="tl-role">IT Support Executive</p>
+          <p class="tl-company">SoftBD LTD · Bangladesh</p>
+          <p class="tl-context">Software solutions for educational institutes and government projects</p>
+          <div class="tl-desc"><ul>
+            <li>Managed education management system for 90+ institutes</li>
+            <li>Coordinated the ePorcha portal for the Bangladesh Ministry of Land</li>
+            <li>Oversaw office management portal for Local Government Engineering Department</li>
+            <li>Coordinated microfinance portal for Ministry of Liberation War Affairs</li>
+            <li>Monitored server performance and created user documentation</li>
+          </ul></div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact" class="contact">
     <div class="contact-inner">
       <p class="section-label reveal">Contact</p>
       <h2 class="section-title reveal">Let's work together</h2>
-      <p class="contact-sub reveal">I'm open to remote roles in Customer Success, Implementation, and RevOps — and available for freelance automation projects. If you need someone who bridges the technical and the human, reach out.</p>
+      <p class="contact-sub reveal">Open to remote roles in Customer Success, Implementation, Project Management, and RevOps — and available for freelance automation projects. If you need someone who bridges the technical and the human side, reach out.</p>
       <div class="contact-links reveal">
-        <a href="mailto:your@email.com" class="btn btn-primary">Send an Email</a>
+        <a href="mailto:sojibbelal2@gmail.com" class="btn btn-primary">Send an Email</a>
         <a href="https://linkedin.com/in/sojib-belal/" target="_blank" class="btn btn-ghost">LinkedIn</a>
         <a href="https://innovatemarketingstudio.com" target="_blank" class="btn btn-ghost">Agency Site</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <p>© 2026 Sojib Belal. All rights reserved.</p>
     <p>Singapore · Open to Remote Worldwide</p>
   </footer>
 
   <script>
-    // Nav scroll effect
     const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    });
-
-    // Scroll reveal
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
@@ -642,7 +450,7 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
     reveals.forEach(el => observer.observe(el));
   </script>
 
